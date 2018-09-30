@@ -247,7 +247,7 @@
 	shmem: shmem@F0000000 {
 		compatible = "samsung,exynos-shm_ipc";
 
-		shmem,ipc_offset = <0x7800000>;
+		shmem,ipc_offset = <0x7000000>;
 		shmem,ipc_size = <0x400000>;
 	};
 };
