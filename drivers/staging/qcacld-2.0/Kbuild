@@ -6,13 +6,8 @@ else
 	KERNEL_BUILD := 0
 endif
 
-ifeq ($(CONFIG_CLD_HL_SDIO_CORE), y)
-	CONFIG_QCA_WIFI_SDIO := 1
-endif
-
-ifeq ($(CONFIG_QCA_WIFI_SDIO), 1)
-	CONFIG_ROME_IF = sdio
-endif
+CONFIG_QCA_WIFI_SDIO := 1
+CONFIG_ROME_IF = sdio
 
 ifndef CONFIG_ROME_IF
 	#use pci as default interface
@@ -1052,10 +1047,6 @@ endif
 
 ifeq ($(CONFIG_PRIMA_WLAN_OKC),y)
 CDEFINES += -DFEATURE_WLAN_OKC
-endif
-
-ifeq ($(CONFIG_PRIMA_WLAN_11AC_HIGH_TP),y)
-CDEFINES += -DWLAN_FEATURE_11AC_HIGH_TP
 endif
 
 ifeq ($(BUILD_DIAG_VERSION),1)
