@@ -126,12 +126,14 @@
 #ifdef CONFIG_ANDROID_PARANOID_NETWORK
 #include <linux/android_aid.h>
 
+#ifdef CONFIG_KNOX_NCM
 /* START_OF_KNOX_NPA */
 #include <net/ncm.h>
 #include <linux/kfifo.h>
 #include <asm/current.h>
 #include <linux/pid.h>
 /* END_OF_KNOX_NPA */
+#endif
 
 static inline int current_has_network(void)
 {
@@ -425,6 +427,7 @@ out_rcu_unlock:
 	goto out;
 }
 
+#ifdef CONFIG_KNOX_NCM
 /* START_OF_KNOX_NPA */
 /** The function is used to check if the ncm feature is enabled or not;
  * if enabled then collect the socket meta-data information;
@@ -436,6 +439,7 @@ static void knox_collect_metadata(struct socket *sock)
 	}
 }
 /* END_OF_KNOX_NPA */
+#endif
 
 /*
  *	The peer socket should always be NULL (or else). When we call this
@@ -468,11 +472,13 @@ int inet_release(struct socket *sock)
 		if (sock_flag(sk, SOCK_LINGER) &&
 		    !(current->flags & PF_EXITING))
 			timeout = sk->sk_lingertime;
+		#ifdef CONFIG_KNOX_NCM
 		/* START_OF_KNOX_NPA */
 		knox_collect_metadata(sock);
 		/* END_OF_KNOX_NPA */
 		sock->sk = NULL;
 		sk->sk_prot->close(sk, timeout);
+		#endif
 	}
 	return 0;
 }
